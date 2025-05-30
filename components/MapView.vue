@@ -1,0 +1,123 @@
+<script setup lang="ts">
+import { GoogleMap, Marker } from "vue3-google-map";
+import type {
+  MarkerClickPayload,
+  MarkerData,
+} from "~/features/monitoring/charging-stations/types";
+
+const MAP_STYLES: google.maps.MapTypeStyle[] = [
+  {
+    featureType: "all",
+    elementType: "all",
+    stylers: [
+      {
+        hue: "#008eff",
+      },
+    ],
+  },
+  {
+    featureType: "poi",
+    elementType: "all",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "road",
+    elementType: "all",
+    stylers: [
+      {
+        saturation: "0",
+      },
+      {
+        lightness: "0",
+      },
+    ],
+  },
+  {
+    featureType: "transit",
+    elementType: "all",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "water",
+    elementType: "all",
+    stylers: [
+      {
+        visibility: "simplified",
+      },
+      {
+        saturation: "-60",
+      },
+      {
+        lightness: "-20",
+      },
+    ],
+  },
+];
+
+type Emits = {
+  (e: "click", event: google.maps.MapMouseEvent): void;
+  (e: "marker-click", payload: MarkerClickPayload): void;
+};
+type Props = {
+  zoom?: number;
+  center?: google.maps.LatLngLiteral;
+  markers?: MarkerData[];
+};
+
+const emit = defineEmits<Emits>();
+const props = withDefaults(defineProps<Props>(), {
+  zoom: 15,
+  center: () => ({ lat: 5.5913754, lng: -0.2497702 }),
+  markers: () => [],
+});
+
+const map = defineModel<google.maps.Map | null>("map", { default: null });
+
+const { googleMapsAPIKey } = useRuntimeConfig().public;
+const mapComponent = ref<{ map: google.maps.Map } | null>(null);
+
+function onMapClick(event: google.maps.MapMouseEvent) {
+  emit("click", event);
+}
+
+function onMarkerClick(event: google.maps.MapMouseEvent, marker: MarkerData) {
+  emit("marker-click", {
+    target: marker,
+    map: map.value,
+  });
+}
+</script>
+
+<template>
+  <GoogleMap
+    ref="mapComponent"
+    :api-key="'AIzaSyBZu-V05AX89qeRLK7S-CRkp6ydb2R1sbs'"
+    style="width: 100%; height: 100%"
+    :center="props.center"
+    :zoom="props.zoom"
+    :styles="MAP_STYLES"
+    @click="onMapClick"
+    @tilesloaded="map = mapComponent?.map ?? null"
+  >
+    <Marker
+      v-for="marker in props.markers"
+      :key="marker.latitude + marker.longitude"
+      :options="{
+        position: { lat: marker.latitude, lng: marker.longitude },
+      }"
+      @click="onMarkerClick($event, marker)"
+    >
+      <slot :name="`marker-${marker.id}`" />
+    </Marker>
+  </GoogleMap>
+</template>
+
+<style scoped></style>

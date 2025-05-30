@@ -1,0 +1,104 @@
+<script setup lang="ts">
+import {
+  ChartNetwork,
+  Award,
+  SatelliteDish,
+  TriangleAlert,
+  BadgeCent,
+  ShieldEllipsis,
+  GlobeLock,
+  Map,
+} from "lucide-vue-next";
+
+import { type SidebarProps } from "@/components/ui/sidebar";
+
+const props = withDefaults(defineProps<SidebarProps>(), {
+  variant: "inset",
+});
+
+const data = {
+  user: {
+    name: "Admin",
+    email: "admin@mail.com",
+    avatar: "/avatars/shadcn.jpg",
+  },
+  navMain: [
+    {
+      title: "Dashboard",
+      url: "/monitoring/dashboard",
+      icon: ShieldEllipsis,
+      isActive: true,
+    },
+    {
+      title: "Spectrum Analyzer",
+      url: "/monitoring/spectrum-analyzer",
+      icon: ChartNetwork,
+    },
+    {
+      title: "Device Map",
+      url: "/management/charging-stations",
+      icon: Map,
+    },
+  ],
+  projects: [
+    {
+      name: "Device Configuration",
+      url: "/mqtt-modules/telemetry-data",
+      icon: SatelliteDish,
+    },
+    {
+      name: "Security Policies",
+      url: "/mqtt-modules/real-time-alerts",
+      icon: TriangleAlert,
+    },
+  ],
+  analytics: [
+    {
+      title: "Billing",
+      url: "",
+      icon: BadgeCent,
+      isActive: true,
+    },
+    {
+      title: "Subscription",
+      url: "",
+      icon: Award,
+      isActive: true,
+    },
+  ],
+};
+</script>
+
+<template>
+  <Sidebar v-bind="props">
+    <SidebarHeader>
+      <SidebarMenu>
+        <SidebarMenuItem class="py-2">
+          <SidebarMenuButton size="lg" class="bg-muted/90" as-child>
+            <a href="#">
+              <div>
+                <GlobeLock class="size-8 stroke-blue-800" />
+              </div>
+              <div class="grid flex-1 text-left text-sm leading-tight">
+                <span class="truncate font-xl text-primary font-semibold"
+                  >IMSIPro</span
+                >
+                <span class="truncate text-xs text-muted-foreground">
+                  IMSIPro Management</span
+                >
+              </div>
+            </a>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarHeader>
+    <SidebarContent>
+      <NavMain :items="data.navMain" />
+      <NavProjects :projects="data.projects" />
+      <NavAnalytics :analytics="data.analytics" />
+    </SidebarContent>
+    <SidebarFooter>
+      <NavUser :user="data.user" />
+    </SidebarFooter>
+  </Sidebar>
+</template>
