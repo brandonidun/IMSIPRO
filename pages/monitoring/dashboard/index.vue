@@ -9,17 +9,7 @@ import {
   Hourglass,
 } from "lucide-vue-next";
 import { Table, TableHeader, TableFooter } from "@/components/DataTable";
-import DashboardFullMapView from "@/components/DashboardFullMapView.vue";
 import { StatCard } from "~/components/Card";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 definePageMeta({
   breadcrumb: "Dashboard",
 });

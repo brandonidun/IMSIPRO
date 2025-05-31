@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { Cog } from "lucide-vue-next";
-import PageIntroduction from "~/components/PageIntroduction.vue";
+import { Cog, Laptop } from "lucide-vue-next";
 import { StatCard } from "~/components/Card";
 
 definePageMeta({
@@ -17,12 +16,7 @@ definePageMeta({
       <Button>Add Device</Button>
     </PageIntroduction>
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
-      <StatCard
-        title="Devices"
-        value="28"
-        :icon="MonitorSmartphone"
-        color="blue"
-      />
+      <StatCard title="Devices" value="28" :icon="Laptop" color="blue" />
       <StatCard
         title="Active Bands"
         value="2"

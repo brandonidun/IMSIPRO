@@ -96,9 +96,8 @@ function onMarkerClick(event: google.maps.MapMouseEvent, marker: MarkerData) {
   });
 }
 
-// For the circle overlay
-const circleCenter = { lat: 5.56, lng: -0.205 }; // Example center
-const circleRadius = 2000; // in meters
+const circleCenter = { lat: 5.56, lng: -0.205 };
+const circleRadius = 5000;
 </script>
 
 <template>

@@ -33,6 +33,10 @@ const props = defineProps<{
 }>();
 
 const { isMobile } = useSidebar();
+
+function handleLogout() {
+  localStorage.removeItem("loginTime");
+}
 </script>
 
 <template>
@@ -46,8 +50,8 @@ const { isMobile } = useSidebar();
           >
             <Avatar class="h-8 w-8 rounded-lg">
               <AvatarImage :src="user.avatar" :alt="user.name" />
-              <AvatarFallback class="rounded-lg text-primary">
-                A
+              <AvatarFallback class="rounded-lg bg-[#192a3b] text-white"
+                >S
               </AvatarFallback>
             </Avatar>
             <div class="grid flex-1 text-left text-sm leading-tight">
@@ -97,12 +101,6 @@ const { isMobile } = useSidebar();
             </NuxtLink>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <NuxtLink to="/auth" class="">
-            <DropdownMenuItem>
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
-          </NuxtLink>
         </DropdownMenuContent>
       </DropdownMenu>
     </SidebarMenuItem>

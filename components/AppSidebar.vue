@@ -8,7 +8,10 @@ import {
   ShieldEllipsis,
   GlobeLock,
   Map,
+  LogOut,
 } from "lucide-vue-next";
+
+import { SidebarMenuButton } from "@/components/ui/sidebar";
 
 import { type SidebarProps } from "@/components/ui/sidebar";
 
@@ -36,7 +39,7 @@ const data = {
     },
     {
       title: "Device Map",
-      url: "/management/charging-stations",
+      url: "/monitoring/device-map",
       icon: Map,
     },
   ],
@@ -67,6 +70,9 @@ const data = {
     },
   ],
 };
+function handleLogout() {
+  localStorage.removeItem("loginTime");
+}
 </script>
 
 <template>
@@ -98,7 +104,13 @@ const data = {
       <NavAnalytics :analytics="data.analytics" />
     </SidebarContent>
     <SidebarFooter>
-      <NavUser :user="data.user" />
+      <!-- <NavUser :user="data.user" /> -->
+      <NuxtLink to="/auth" class="flex items-center gap-2">
+        <SidebarMenuButton @click="handleLogout">
+          <LogOut />
+          Log out
+        </SidebarMenuButton>
+      </NuxtLink>
     </SidebarFooter>
   </Sidebar>
 </template>
