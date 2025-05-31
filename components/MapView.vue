@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { GoogleMap, Marker } from "vue3-google-map";
+import { GoogleMap, CustomMarker, Marker, Circle } from "vue3-google-map";
+import { Vibrate } from "lucide-vue-next";
 import type {
   MarkerClickPayload,
   MarkerData,
@@ -94,6 +95,10 @@ function onMarkerClick(event: google.maps.MapMouseEvent, marker: MarkerData) {
     map: map.value,
   });
 }
+
+// For the circle overlay
+const circleCenter = { lat: 5.56, lng: -0.205 }; // Example center
+const circleRadius = 2000; // in meters
 </script>
 
 <template>
@@ -107,6 +112,17 @@ function onMarkerClick(event: google.maps.MapMouseEvent, marker: MarkerData) {
     @click="onMapClick"
     @tilesloaded="map = mapComponent?.map ?? null"
   >
+    <Circle
+      :options="{
+        center: circleCenter,
+        radius: circleRadius,
+        strokeColor: '#0000FF',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#0000FF',
+        fillOpacity: 0.1,
+      }"
+    />
     <Marker
       v-for="marker in props.markers"
       :key="marker.latitude + marker.longitude"

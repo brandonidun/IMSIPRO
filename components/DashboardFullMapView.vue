@@ -2,13 +2,13 @@
 import { ArrowRight } from "lucide-vue-next";
 import { InfoWindow } from "vue3-google-map";
 import type {
-  ChargerMapLocation,
+  DeviceMapLocation,
   MarkerClickPayload,
 } from "~/features/monitoring/charging-stations/types";
 import MapView from "@/components/MapView.vue";
 
 type Props = {
-  locations: ChargerMapLocation[];
+  locations: DeviceMapLocation[];
 };
 
 const props = defineProps<Props>();
@@ -49,21 +49,32 @@ function handleMarkerClick({ target }: MarkerClickPayload) {
       >
         <InfoWindow
           v-if="marker.id"
-          style="width: 250px"
+          style="width: 170px; height: 80px"
           @closeclick="map?.setZoom(12)"
         >
-          <div class="text-lg text-center">
-            <p class="text-2xl font-bold">{{ marker.name }}</p>
-            <p class="text-gray-400 text-xl font-bold">({{ marker.id }})</p>
+          <div class="text-md text-start">
+            <p class="text-sm">
+              <span class="font-bold">IMEI:</span> {{ marker.IMEI }}
+            </p>
+            <p class="text-sm">
+              <span class="font-bold">Phone:</span> {{ marker.phone_number }}
+            </p>
+            <p class="text-sm">
+              <span class="font-bold">IMSI:</span> {{ marker.IMSI }}
+            </p>
+            <p class="text-sm">
+              <span class="font-bold">Signal:</span>
+              {{ marker.signal_strength }}%
+            </p>
           </div>
-          <div class="text-center mt-4">
+          <!-- <div class="text-center mt-4">
             <Button
               @click="navigateTo(`/mqtt-modules/telemetry-data/${marker.id}`)"
             >
-              View details
+              View Details
               <ArrowRight class="ml-2 size-4" />
             </Button>
-          </div>
+          </div> -->
         </InfoWindow>
       </template>
     </MapView>

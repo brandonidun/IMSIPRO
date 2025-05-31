@@ -43,7 +43,7 @@ const data = {
   projects: [
     {
       name: "Device Configuration",
-      url: "/mqtt-modules/telemetry-data",
+      url: "/management/device-configuration",
       icon: SatelliteDish,
     },
     {
@@ -81,10 +81,10 @@ const data = {
               </div>
               <div class="grid flex-1 text-left text-sm leading-tight">
                 <span class="truncate font-xl text-primary font-semibold"
-                  >IMSIPro</span
+                  >SÁROSI</span
                 >
                 <span class="truncate text-xs text-muted-foreground">
-                  IMSIPro Management</span
+                  Surveillance Management</span
                 >
               </div>
             </a>

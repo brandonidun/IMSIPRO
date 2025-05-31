@@ -1,7 +1,12 @@
-export type ChargerMapLocation = {
+export type DeviceMapLocation = {
   lng: number;
   lat: number;
-  idTag: string;
+  IMEI: string;
+  IMSI: string;
+  phone_number: string;
+  network: string;
+  signal_strength: number;
+  band: string;
   id: number;
   name: string;
   optional: {

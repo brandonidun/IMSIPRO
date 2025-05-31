@@ -28,13 +28,14 @@ function updateSearch(e: Event) {
             placeholder="Search..."
           />
         </div>
-        <Button
+        <!-- <Button
           @click="$emit('filter')"
           class="flex items-center gap-1 px-3 py-2 bg-gray-100 shadow-none rounded-md text-sm text-primary hover:bg-gray-300"
         >
           <Filter class="w-4 h-4 text-gray-700" />
           <span class="text-gray-700 hidden md:block">Filter</span>
-        </Button>
+        </Button> -->
+        <slot></slot>
 
         <Button
           @click="$emit('export')"
