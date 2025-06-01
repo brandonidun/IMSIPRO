@@ -7,6 +7,7 @@ import {
   AudioLines,
   FileWarning,
   Hourglass,
+  RefreshCcw,
 } from "lucide-vue-next";
 import { Table, TableHeader, TableFooter } from "@/components/DataTable";
 import { StatCard } from "~/components/Card";
@@ -33,8 +34,8 @@ const deviceLocations = [
     id: 2,
     idTag: "SC-002",
     name: "Scooter 2",
-    lat: 5.675,
-    lng: -0.01,
+    lat: 5.53,
+    lng: -0.23,
     IMEI: "356789098765432",
     IMSI: "310260987654321",
     phone_number: "+2334567891",
@@ -61,8 +62,8 @@ const deviceLocations = [
     id: 4,
     idTag: "SC-004",
     name: "Scooter 4",
-    lat: 5.603,
-    lng: -0.186,
+    lat: 5.593,
+    lng: -0.19,
     IMEI: "356789055667788",
     IMSI: "310120556677889",
     phone_number: "+2334567893",
@@ -103,8 +104,8 @@ const deviceLocations = [
     id: 7,
     idTag: "SC-007",
     name: "Scooter 7",
-    lat: 5.62,
-    lng: -0.19,
+    lat: 5.55,
+    lng: -0.22,
     IMEI: "356789044556677",
     IMSI: "310120556677882",
     phone_number: "+2334567896",
@@ -440,7 +441,7 @@ const deviceCards = computed(() => filteredData.value.slice(0, 6)); // Example: 
       </Card>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
       <div class="md:col-span-2 h-full">
         <Table
           :columns="columns"
@@ -454,7 +455,14 @@ const deviceCards = computed(() => filteredData.value.slice(0, 6)); // Example: 
               title="Connected Devices"
               v-model="search"
               @export="exportData"
-            />
+              ><Button
+                @click="$emit('export')"
+                class="flex items-center gap-1 px-3 py-2 bg-gray-100 shadow-none rounded-md text-sm text-primary hover:bg-gray-300"
+              >
+                <RefreshCcw class="w-4 h-4 text-gray-700" />
+                <span class="text-gray-700 hidden md:block">Refresh</span>
+              </Button></TableHeader
+            >
           </template>
           <template #cell-signal_strength="{ row }">
             <div class="flex flex-col items-center">
@@ -528,6 +536,7 @@ const deviceCards = computed(() => filteredData.value.slice(0, 6)); // Example: 
                   :variant="
                     selectedBands.includes(band) ? 'default' : 'outline'
                   "
+                  class="p-3 text-sm"
                   @click="toggleBand(band)"
                 >
                   {{ band }}

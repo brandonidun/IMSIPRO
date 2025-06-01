@@ -51,7 +51,7 @@ const data = {
     },
     {
       name: "Security Policies",
-      url: "/mqtt-modules/real-time-alerts",
+      url: "/management/security-policies",
       icon: TriangleAlert,
     },
   ],
@@ -78,6 +78,12 @@ function handleLogout() {
 <template>
   <Sidebar v-bind="props">
     <SidebarHeader>
+      <img
+        src="/assets/images/logo2.png"
+        class="px-2"
+        style="filter: invert(1)"
+        alt="Sárosi"
+      />
       <SidebarMenu>
         <SidebarMenuItem class="py-2">
           <SidebarMenuButton size="lg" class="bg-muted/90" as-child>

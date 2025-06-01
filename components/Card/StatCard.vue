@@ -20,7 +20,7 @@ defineProps<{
           </CardDescription>
         </div>
         <div
-          :class="`p-3 rounded-full flex justify-center items-center border-2 bg-${color}-100 border-${color}-200`"
+          :class="`p-3 rounded-full flex justify-center items-center border-2 bg-black-100 border-${color}-200`"
         >
           <component :is="icon" :class="`text-${color}-800`" />
         </div>
