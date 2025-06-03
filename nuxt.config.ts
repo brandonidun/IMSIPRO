@@ -36,4 +36,9 @@ export default defineNuxtConfig({
      */
     componentDir: "./components/ui",
   },
+  runtimeConfig: {
+    public: {
+      GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
+    },
+  },
 });

@@ -6,6 +6,9 @@ import type {
   MarkerData,
 } from "~/features/monitoring/charging-stations/types";
 
+// Import the Google Maps API key from the public runtime config (from .env)
+const { GOOGLE_MAPS_API_KEY } = useRuntimeConfig().public;
+
 const MAP_STYLES: google.maps.MapTypeStyle[] = [
   {
     featureType: "all",
@@ -82,7 +85,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const map = defineModel<google.maps.Map | null>("map", { default: null });
 
-const { googleMapsAPIKey } = useRuntimeConfig().public;
 const mapComponent = ref<{ map: google.maps.Map } | null>(null);
 
 function onMapClick(event: google.maps.MapMouseEvent) {
@@ -103,7 +105,7 @@ const circleRadius = 5000;
 <template>
   <GoogleMap
     ref="mapComponent"
-    :api-key="'AIzaSyBZu-V05AX89qeRLK7S-CRkp6ydb2R1sbs'"
+    :api-key="GOOGLE_MAPS_API_KEY as string"
     style="width: 100%; height: 100%"
     :center="props.center"
     :zoom="props.zoom"
