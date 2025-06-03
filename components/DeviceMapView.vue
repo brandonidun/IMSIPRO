@@ -34,6 +34,19 @@ function handleMarkerClick({ target }: MarkerClickPayload) {
   map.value.setCenter({ lat: target.latitude, lng: target.longitude });
   map.value.setZoom(14);
 }
+
+watch(
+  () => props.selectedMarkerId,
+  (newId) => {
+    if (newId) {
+      const marker = markers.value.find((m) => m.id == newId);
+      if (marker && map.value) {
+        map.value.setCenter({ lat: marker.latitude, lng: marker.longitude });
+        map.value.setZoom(16);
+      }
+    }
+  }
+);
 </script>
 
 <template>
@@ -54,7 +67,7 @@ function handleMarkerClick({ target }: MarkerClickPayload) {
         #[`marker-${marker.id}`]
       >
         <InfoWindow
-          v-if="marker.id && marker.id == props.selectedMarkerId"
+          v-if="marker.id"
           style="width: 170px; height: 80px"
           @closeclick="map?.setZoom(12)"
         >
