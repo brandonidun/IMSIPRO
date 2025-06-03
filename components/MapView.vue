@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { GoogleMap, CustomMarker, Marker, Circle } from "vue3-google-map";
-import { Vibrate } from "lucide-vue-next";
 import type {
   MarkerClickPayload,
   MarkerData,
@@ -74,6 +73,7 @@ type Props = {
   zoom?: number;
   center?: google.maps.LatLngLiteral;
   markers?: MarkerData[];
+  icon?: string;
 };
 
 const emit = defineEmits<Emits>();
@@ -129,6 +129,7 @@ const circleRadius = 5000;
       :key="marker.latitude + marker.longitude"
       :options="{
         position: { lat: marker.latitude, lng: marker.longitude },
+        icon: props.icon,
       }"
       @click="onMarkerClick($event, marker)"
     >

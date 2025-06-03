@@ -160,7 +160,7 @@ const {
       description="Monitor real-time network signal strength, cellular band usage, and SIM status across all devices in the fleet."
     >
       <Button @click="updateSpectrumDashboard" class="ml-4">
-        <RefreshCcw class="w-4 h-4 mr-2" /> Refresh Now
+        <RefreshCcw class="w-4 h-4" /> Refresh Now
       </Button>
     </PageIntroduction>
 

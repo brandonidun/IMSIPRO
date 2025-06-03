@@ -361,11 +361,45 @@ const filteredData = computed(() =>
 const filteredLocations = filteredData;
 
 function refreshTable() {
-  // Add your refresh logic here (e.g., fetch new data)
   console.log("Table refreshed!");
 }
 
-const deviceCards = computed(() => filteredData.value.slice(0, 6)); // Example: show first 6
+const userLocation = ref<{ lat: number; lng: number } | null>(null);
+
+onMounted(() => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        userLocation.value = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+      },
+      (error) => {
+        // Fallback to a default location if denied or error
+        userLocation.value = { lat: 5.5913754, lng: -0.2497702 };
+      }
+    );
+  } else {
+    userLocation.value = { lat: 5.5913754, lng: -0.2497702 };
+  }
+});
+
+const allMarkers = computed(() => {
+  if (userLocation.value) {
+    return [
+      ...filteredLocations.value,
+      {
+        id: "user-location",
+        name: "You are here",
+        lat: userLocation.value.lat,
+        lng: userLocation.value.lng,
+        isUser: true,
+      },
+    ];
+  }
+  return deviceLocations;
+});
 </script>
 
 <template>
@@ -430,14 +464,17 @@ const deviceCards = computed(() => filteredData.value.slice(0, 6)); // Example: 
       </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <Card class="shadow-none pb-0 col-span-2">
+      <Card class="shadow-none pb-0 col-span-2 overflow-hidden h-full">
         <CardHeader class="flex items-center justify-between">
           <CardTitle class="text-base">Device Location Map</CardTitle>
         </CardHeader>
-        <DashboardFullMapView
-          :locations="filteredLocations"
-          class="min-h-[400px] h-full"
-        />
+        <CardContent class="p-0">
+          <FullMapView
+            :locations="allMarkers"
+            :center="userLocation"
+            class="min-h-[400px] h-full"
+          />
+        </CardContent>
       </Card>
     </div>
 

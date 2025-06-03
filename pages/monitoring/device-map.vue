@@ -1,163 +1,273 @@
 <script setup lang="ts">
-import { Map } from "lucide-vue-next";
+import { Map, Radar, ShieldAlert, Fence, MapPinned } from "lucide-vue-next";
+import { StatCard } from "~/components/Card";
+import { Table, TableHeader, TableFooter } from "@/components/DataTable";
+import { ref, onMounted, computed } from "vue";
 
 definePageMeta({
   breadcrumb: "Device Map",
 });
 
-const deviceLocations = [
+const trackingDevices = [
   {
     id: 1,
     idTag: "SC-001",
     name: "Scooter 1",
+    status: "active",
     lat: 5.56,
     lng: -0.205,
-    IMEI: "356789012345678",
-    IMSI: "310150123456789",
     phone_number: "+2334567890",
-    network: "AT&T",
+    IMSI: "310150123456789",
     signal_strength: 90,
-    band: "Band 1",
-    optional: { active: 1 },
   },
   {
     id: 2,
     idTag: "SC-002",
     name: "Scooter 2",
+    status: "inactive",
     lat: 5.675,
     lng: -0.01,
-    IMEI: "356789098765432",
-    IMSI: "310260987654321",
     phone_number: "+2334567891",
-    network: "T-Mobile",
+    IMSI: "310260987654321",
     signal_strength: 60,
-    band: "Band 3",
-    optional: { active: 1 },
   },
   {
     id: 3,
     idTag: "SC-003",
     name: "Scooter 3",
+    status: "active",
     lat: 5.548,
     lng: -0.197,
-    IMEI: "356789011223344",
-    IMSI: "310410112233445",
     phone_number: "+2334567892",
-    network: "Verizon",
+    IMSI: "310410112233445",
     signal_strength: 35,
-    band: "Band 5",
-    optional: { active: 1 },
   },
   {
     id: 4,
     idTag: "SC-004",
     name: "Scooter 4",
+    status: "active",
     lat: 5.603,
     lng: -0.186,
-    IMEI: "356789055667788",
-    IMSI: "310120556677889",
     phone_number: "+2334567893",
-    network: "Sprint",
+    IMSI: "310120556677889",
     signal_strength: 80,
-    band: "Band 8",
-    optional: { active: 1 },
   },
   {
     id: 5,
     idTag: "SC-005",
     name: "Scooter 5",
+    status: "inactive",
     lat: 5.567,
     lng: -0.201,
-    IMEI: "356789022334455",
-    IMSI: "310120556677880",
     phone_number: "+2334567894",
-    network: "Vodafone",
+    IMSI: "310120556677880",
     signal_strength: 75,
-    band: "Band 38",
-    optional: { active: 1 },
   },
   {
     id: 6,
     idTag: "SC-006",
     name: "Scooter 6",
+    status: "maintenance",
     lat: 5.59,
     lng: -0.22,
-    IMEI: "356789033445566",
-    IMSI: "310120556677881",
     phone_number: "+2334567895",
-    network: "MTN",
+    IMSI: "310120556677881",
     signal_strength: 55,
-    band: "Band 39",
-    optional: { active: 1 },
   },
   {
     id: 7,
     idTag: "SC-007",
     name: "Scooter 7",
+    status: "active",
     lat: 5.62,
     lng: -0.19,
-    IMEI: "356789044556677",
-    IMSI: "310120556677882",
     phone_number: "+2334567896",
-    network: "AirtelTigo",
+    IMSI: "310120556677882",
     signal_strength: 65,
-    band: "Band 40",
-    optional: { active: 1 },
   },
   {
     id: 8,
     idTag: "SC-008",
     name: "Scooter 8",
+    status: "inactive",
     lat: 5.55,
     lng: -0.21,
-    IMEI: "356789055667788",
-    IMSI: "310120556677883",
     phone_number: "+2334567897",
-    network: "Glo",
+    IMSI: "310120556677883",
     signal_strength: 45,
-    band: "Band 41",
-    optional: { active: 1 },
   },
   {
     id: 9,
     idTag: "SC-009",
     name: "Scooter 9",
+    status: "maintenance",
     lat: 5.58,
     lng: -0.18,
-    IMEI: "356789066778899",
-    IMSI: "310120556677884",
     phone_number: "+2334567898",
-    network: "Expresso",
+    IMSI: "310120556677884",
     signal_strength: 50,
-    band: "GSM 900",
-    optional: { active: 1 },
   },
   {
     id: 10,
     idTag: "SC-010",
     name: "Scooter 10",
+    status: "active",
     lat: 5.6,
     lng: -0.2,
-    IMEI: "356789077889900",
-    IMSI: "310120556677885",
     phone_number: "+2334567899",
-    network: "Busy",
+    IMSI: "310120556677885",
     signal_strength: 70,
-    band: "GSM 1800",
-    optional: { active: 1 },
   },
 ];
+
+const userLocation = ref<{ lat: number; lng: number } | null>(null);
+const selectedCenter = ref(userLocation.value);
+const selectedMarkerId = ref<string | number | null>(null);
+
+onMounted(() => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        userLocation.value = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+      },
+      (error) => {
+        // Fallback to a default location if denied or error
+        userLocation.value = { lat: 5.5913754, lng: -0.2497702 };
+      }
+    );
+  } else {
+    userLocation.value = { lat: 5.5913754, lng: -0.2497702 };
+  }
+});
+
+// Combine device locations and user location for markers
+const allMarkers = computed(() => {
+  if (userLocation.value) {
+    return [
+      ...trackingDevices,
+      {
+        id: "user-location",
+        idTag: "You are here",
+        name: "You are here",
+        status: "user",
+        lat: userLocation.value.lat,
+        lng: userLocation.value.lng,
+        phone_number: "-",
+        IMSI: "-",
+        signal_strength: 0,
+        isUser: true,
+      },
+    ];
+  }
+  return trackingDevices;
+});
+
+const columns = [
+  { key: "idTag", label: "Tracker" },
+  { key: "status", label: "Status" },
+];
+
+const {
+  search,
+  paginatedRows,
+  toggleSort,
+  sortKey,
+  sortOrder,
+  currentPage,
+  totalPages,
+  filtered,
+  perPage,
+  goToNext,
+  goToPrev,
+  exportData,
+} = useDataTable(trackingDevices);
+
+function centerOnTracker(tracker: any) {
+  selectedCenter.value = { lat: tracker.lat, lng: tracker.lng };
+  selectedMarkerId.value = tracker.id;
+}
 </script>
 
 <template>
-  <main class="flex flex-col h-screen w-full">
+  <main class="flex flex-col h-screen w-full gap-4 px-4">
     <PageIntroduction
       title="Device Map"
       description="View the map of the devices"
       :icon="Map"
     />
-    <div class="flex-1 w-full h-full min-h-0 rounded-xl">
-      <FullMapView :locations="deviceLocations" />
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+      <StatCard title="Tracked Devices" value="28" :icon="Radar" color="blue" />
+      <StatCard
+        title="Active Tracking"
+        value="2"
+        :icon="MapPinned"
+        color="blue"
+      />
+      <StatCard title="Geofence Zones" value="32" :icon="Fence" color="blue" />
+      <StatCard
+        title="Alerts Today"
+        value="5"
+        :icon="ShieldAlert"
+        color="blue"
+      />
+    </div>
+    <div class="grid w-full grid-cols-3 h-full rounded-xl gap-4">
+      <Card class="shadow-none col-span-2 pb-0 overflow-hidden">
+        <CardHeader class="flex items-center justify-between">
+          <CardTitle class="text-base">Live Tracking Map</CardTitle>
+        </CardHeader>
+        <CardContent class="p-0">
+          <DeviceMapView
+            :locations="allMarkers"
+            :center="selectedCenter"
+            :selected-marker-id="selectedMarkerId"
+            class="min-h-[400px] h-full"
+          />
+        </CardContent>
+      </Card>
+      <div class="md:col-span-1 h-full">
+        <Table
+          :columns="columns"
+          :rows="paginatedRows"
+          :sort-key="sortKey"
+          :sort-order="sortOrder"
+          :toggle-sort="toggleSort"
+          @row-click="centerOnTracker"
+        >
+          <template #header>
+            <TableHeader
+              title="Connected Trackers"
+              v-model="search"
+              @export="exportData"
+            ></TableHeader>
+          </template>
+          <template #cell-status="{ row }">
+            <span
+              :class="{
+                'text-green-700 font-semibold': row.status === 'active',
+                'text-yellow-700 font-semibold': row.status === 'maintenance',
+                'text-red-700 font-semibold': row.status === 'inactive',
+              }"
+            >
+              {{ row.status.charAt(0).toUpperCase() + row.status.slice(1) }}
+            </span>
+          </template>
+          <template #footer>
+            <TableFooter
+              :page="currentPage"
+              :total="filtered.length"
+              :totalPages="totalPages"
+              :rows="paginatedRows"
+              @next="goToNext"
+              @prev="goToPrev"
+            />
+          </template>
+        </Table>
+      </div>
     </div>
   </main>
 </template>

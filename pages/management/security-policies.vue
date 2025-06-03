@@ -26,7 +26,7 @@ const {
       description="Manage password rules, session duration, and account protection policies."
     >
       <Button @click="refreshPolicies" class="ml-4">
-        <RefreshCcw class="w-4 h-4 mr-2" /> Reload Policies
+        <RefreshCcw class="w-4 h-4" /> Reload Policies
       </Button>
     </PageIntroduction>
 

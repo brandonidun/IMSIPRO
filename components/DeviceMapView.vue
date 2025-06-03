@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ArrowRight } from "lucide-vue-next";
 import { InfoWindow } from "vue3-google-map";
+import Tracker from "~/assets/svgs/tracker.svg";
 import type {
   DeviceMapLocation,
   MarkerClickPayload,
@@ -10,6 +11,7 @@ import MapView from "@/components/MapView.vue";
 type Props = {
   locations: DeviceMapLocation[];
   center?: { lat: number; lng: number };
+  selectedMarkerId?: string | number | null;
 };
 
 const props = defineProps<Props>();
@@ -40,7 +42,9 @@ function handleMarkerClick({ target }: MarkerClickPayload) {
       v-model:map="map"
       :markers="markers"
       :zoom="12"
+      :icon="Tracker"
       :center="props.center"
+      :selected-marker-id="props.selectedMarkerId"
       class="w-full h-full"
       @marker-click="handleMarkerClick"
     >
@@ -50,33 +54,28 @@ function handleMarkerClick({ target }: MarkerClickPayload) {
         #[`marker-${marker.id}`]
       >
         <InfoWindow
-          v-if="marker.id"
+          v-if="marker.id && marker.id == props.selectedMarkerId"
           style="width: 170px; height: 80px"
           @closeclick="map?.setZoom(12)"
         >
-          <div class="text-md text-start">
-            <p class="text-sm">
-              <span class="font-bold">IMEI:</span> {{ marker.IMEI }}
-            </p>
-            <p class="text-sm">
-              <span class="font-bold">Phone:</span> {{ marker.phone_number }}
-            </p>
-            <p class="text-sm">
-              <span class="font-bold">IMSI:</span> {{ marker.IMSI }}
+          <div class="text-md text-center">
+            <p class="text-lg font-bold">
+              {{ marker.idTag }}
             </p>
             <p class="text-sm">
               <span class="font-bold">Signal:</span>
               {{ marker.signal_strength }}%
             </p>
+            <p class="text-sm">
+              <span class="font-bold">Status:</span>
+              {{
+                "status" in marker && marker.status
+                  ? String(marker.status).charAt(0).toUpperCase() +
+                    String(marker.status).slice(1)
+                  : "Unknown"
+              }}
+            </p>
           </div>
-          <!-- <div class="text-center mt-4">
-            <Button
-              @click="navigateTo(`/mqtt-modules/telemetry-data/${marker.id}`)"
-            >
-              View Details
-              <ArrowRight class="ml-2 size-4" />
-            </Button>
-          </div> -->
         </InfoWindow>
       </template>
     </MapView>

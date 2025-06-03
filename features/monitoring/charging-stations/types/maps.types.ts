@@ -8,6 +8,7 @@ export type DeviceMapLocation = {
   signal_strength: number;
   band: string;
   id: number;
+  idTag: string;
   name: string;
   optional: {
     active: number;

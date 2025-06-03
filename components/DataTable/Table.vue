@@ -48,7 +48,12 @@ import { ArrowUpDown, MoveUp, MoveDown } from "lucide-vue-next";
             </td>
           </tr>
 
-          <tr v-for="(row, i) in rows" :key="i">
+          <tr
+            v-for="(row, i) in rows"
+            :key="i"
+            @click="$emit('row-click', row)"
+            class="cursor-pointer hover:bg-gray-100"
+          >
             <td
               v-for="col in columns"
               :key="col.key"

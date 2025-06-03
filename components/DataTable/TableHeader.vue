@@ -4,6 +4,8 @@ import { Filter, Download } from "lucide-vue-next";
 const props = defineProps<{
   title: string;
   modelValue: string;
+  refresh?: boolean;
+  export?: boolean;
 }>();
 
 const emit = defineEmits(["update:modelValue", "filter", "export"]);
@@ -38,6 +40,7 @@ function updateSearch(e: Event) {
         <slot></slot>
 
         <Button
+          v-if="props.export"
           @click="$emit('export')"
           class="flex items-center gap-1 px-3 py-2 bg-gray-100 shadow-none rounded-md text-sm text-primary hover:bg-gray-300"
         >
