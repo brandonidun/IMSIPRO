@@ -258,13 +258,17 @@ function saveTrackingSettings() {
     />
     <div class="p-10">
       <Card class="p-4">
-        <CardTitle class="font-semibold">Advanced Configuration</CardTitle>
+        <CardTitle
+          class="flex items-center justify-center text-lg font-semibold text-center"
+          >Advanced Configuration</CardTitle
+        >
+        <Separator />
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Network Settings -->
-          <div class="bg-white dark:bg-muted rounded-xl p-6 border">
+          <div class="bg-white dark:bg-muted rounded-xl p-6 border-none">
             <div class="flex items-center gap-2 mb-4">
               <CloudCog />
-              <span class="text-lg font-semibold">Network Settings</span>
+              <span class="text-base font-semibold">Network Settings</span>
             </div>
             <form @submit.prevent="saveNetworkSettings">
               <FormField v-slot="{ componentField }" :name="'mode'">
@@ -313,6 +317,7 @@ function saveTrackingSettings() {
                     <Input
                       v-model="networkForm.ip"
                       v-bind="componentField"
+                      placeholder="192.168.1.0"
                       disabled
                     />
                   </FormControl>
@@ -327,11 +332,11 @@ function saveTrackingSettings() {
           </div>
           <!-- Tracking Settings -->
           <div
-            class="flex flex-col justify-between bg-white dark:bg-muted rounded-xl p-6 border"
+            class="flex flex-col justify-between bg-white dark:bg-muted rounded-xl p-6 border-none"
           >
             <div class="flex items-center gap-2 mb-4">
               <LocateFixed />
-              <span class="text-lg font-semibold">Tracking Settings</span>
+              <span class="text-base font-semibold">Tracking Settings</span>
             </div>
             <form @submit.prevent="saveTrackingSettings">
               <FormField v-slot="{ componentField }" :name="'interval'">

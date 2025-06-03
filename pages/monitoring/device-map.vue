@@ -121,8 +121,9 @@ const trackingDevices = [
   },
 ];
 
-const userLocation = ref<{ lat: number; lng: number } | null>(null);
-const selectedCenter = ref(userLocation.value);
+const DEFAULT_CENTER = { lat: 5.5913754, lng: -0.2497702 };
+const userLocation = ref<{ lat: number; lng: number } | null>(DEFAULT_CENTER);
+const selectedCenter = ref(DEFAULT_CENTER);
 const selectedMarkerId = ref<string | number | null>(null);
 
 onMounted(() => {
@@ -133,14 +134,16 @@ onMounted(() => {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
+        selectedCenter.value = userLocation.value;
       },
       (error) => {
-        // Fallback to a default location if denied or error
-        userLocation.value = { lat: 5.5913754, lng: -0.2497702 };
+        userLocation.value = DEFAULT_CENTER;
+        selectedCenter.value = DEFAULT_CENTER;
       }
     );
   } else {
-    userLocation.value = { lat: 5.5913754, lng: -0.2497702 };
+    userLocation.value = DEFAULT_CENTER;
+    selectedCenter.value = DEFAULT_CENTER;
   }
 });
 
