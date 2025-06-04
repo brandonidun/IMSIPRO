@@ -20,8 +20,8 @@ const deviceLocations = [
     id: 1,
     idTag: "SC-001",
     name: "Scooter 1",
-    lat: 5.56,
-    lng: -0.205,
+    lat: 5.57,
+    lng: -0.2,
     IMEI: "356789012345678",
     IMSI: "310150123456789",
     phone_number: "+2334567890",
@@ -384,22 +384,6 @@ onMounted(() => {
     userLocation.value = { lat: 5.5913754, lng: -0.2497702 };
   }
 });
-
-const allMarkers = computed(() => {
-  if (userLocation.value) {
-    return [
-      ...filteredLocations.value,
-      {
-        id: "user-location",
-        name: "You are here",
-        lat: userLocation.value.lat,
-        lng: userLocation.value.lng,
-        isUser: true,
-      },
-    ];
-  }
-  return deviceLocations;
-});
 </script>
 
 <template>
@@ -470,7 +454,7 @@ const allMarkers = computed(() => {
         </CardHeader>
         <CardContent class="p-0">
           <FullMapView
-            :locations="allMarkers"
+            :locations="deviceLocations"
             :center="userLocation"
             class="min-h-[400px] h-full"
           />

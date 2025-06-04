@@ -9,6 +9,7 @@ import {
   GlobeLock,
   Map,
   LogOut,
+  FileChartPie,
 } from "lucide-vue-next";
 
 import { SidebarMenuButton } from "@/components/ui/sidebar";
@@ -36,6 +37,11 @@ const data = {
       title: "Spectrum Analyzer",
       url: "/monitoring/spectrum-analyzer",
       icon: ChartNetwork,
+    },
+    {
+      title: "Analytics",
+      url: "/monitoring/analytics",
+      icon: FileChartPie,
     },
     {
       title: "Device Map",

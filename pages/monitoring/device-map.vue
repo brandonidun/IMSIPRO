@@ -3,6 +3,7 @@ import { Map, Radar, ShieldAlert, Fence, MapPinned } from "lucide-vue-next";
 import { StatCard } from "~/components/Card";
 import { Table, TableHeader, TableFooter } from "@/components/DataTable";
 import { ref, onMounted, computed } from "vue";
+import UserIcon from "@/assets/svgs/user.svg";
 
 definePageMeta({
   breadcrumb: "Device Map",
@@ -150,21 +151,7 @@ onMounted(() => {
 // Combine device locations and user location for markers
 const allMarkers = computed(() => {
   if (userLocation.value) {
-    return [
-      ...trackingDevices,
-      {
-        id: "user-location",
-        idTag: "You are here",
-        name: "You are here",
-        status: "user",
-        lat: userLocation.value.lat,
-        lng: userLocation.value.lng,
-        phone_number: "-",
-        IMSI: "-",
-        signal_strength: 0,
-        isUser: true,
-      },
-    ];
+    return [...trackingDevices];
   }
   return trackingDevices;
 });

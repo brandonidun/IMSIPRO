@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { GoogleMap, CustomMarker, Marker, Circle } from "vue3-google-map";
+import { GoogleMap, Marker, Circle } from "vue3-google-map";
 import type {
   MarkerClickPayload,
   MarkerData,
 } from "~/features/monitoring/charging-stations/types";
+import UserIcon from "@/assets/svgs/user.svg";
 
 // Import the Google Maps API key from the public runtime config (from .env)
 const { GOOGLE_MAPS_API_KEY } = useRuntimeConfig().public;
-
+const userLocation = ref<google.maps.LatLngLiteral | null>(null);
+const showUserMarker = ref(false);
 const MAP_STYLES: google.maps.MapTypeStyle[] = [
   {
     featureType: "all",
@@ -100,6 +102,23 @@ function onMarkerClick(event: google.maps.MapMouseEvent, marker: MarkerData) {
 
 const circleCenter = { lat: 5.56, lng: -0.205 };
 const circleRadius = 5000;
+
+onMounted(() => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        userLocation.value = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        showUserMarker.value = true;
+      },
+      (error) => {
+        console.error("Geolocation error:", error);
+      }
+    );
+  }
+});
 </script>
 
 <template>
@@ -135,6 +154,14 @@ const circleRadius = 5000;
     >
       <slot :name="`marker-${marker.id}`" />
     </Marker>
+    <Marker
+      v-if="showUserMarker && userLocation"
+      :options="{
+        position: userLocation,
+        icon: UserIcon,
+      }"
+    />
+    <slot name="phone-marker" />
   </GoogleMap>
 </template>
 

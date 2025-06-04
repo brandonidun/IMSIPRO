@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ArrowRight } from "lucide-vue-next";
 import { InfoWindow } from "vue3-google-map";
+import Tracker from "~/assets/svgs/tracker.svg";
+import PhoneIcon from "@/assets/svgs/phone.svg";
 import type {
   DeviceMapLocation,
   MarkerClickPayload,
 } from "~/features/monitoring/charging-stations/types";
 import MapView from "@/components/MapView.vue";
+import { Marker } from "vue3-google-map";
 
 type Props = {
   locations: DeviceMapLocation[];
@@ -39,6 +42,7 @@ function handleMarkerClick({ target }: MarkerClickPayload) {
     <MapView
       v-model:map="map"
       :markers="markers"
+      :icon="PhoneIcon"
       :zoom="12"
       :center="props.center"
       class="w-full h-full"
@@ -69,6 +73,7 @@ function handleMarkerClick({ target }: MarkerClickPayload) {
               {{ marker.signal_strength }}%
             </p>
           </div>
+
           <!-- <div class="text-center mt-4">
             <Button
               @click="navigateTo(`/mqtt-modules/telemetry-data/${marker.id}`)"
@@ -78,6 +83,14 @@ function handleMarkerClick({ target }: MarkerClickPayload) {
             </Button>
           </div> -->
         </InfoWindow>
+      </template>
+      <template #phone-marker>
+        <Marker
+          :options="{
+            position: { lat: 5.56, lng: -0.205 },
+            icon: Tracker,
+          }"
+        />
       </template>
     </MapView>
   </div>
