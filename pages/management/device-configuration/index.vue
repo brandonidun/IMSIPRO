@@ -39,6 +39,7 @@ import {
   SelectLabel,
   SelectItem,
 } from "@/components/ui/select";
+import ActionButtons from "@/components/DataTable/ActionButtons.vue";
 
 definePageMeta({
   breadcrumb: "Device Configuration",
@@ -312,6 +313,19 @@ function addDevice() {
     lng: 0,
   });
 }
+const router = useRouter();
+
+function onView(device: any) {
+  router.push(`/management/device-configuration/${device.id}`);
+}
+
+function onDelete(device: any) {
+  alert(`Delete device ${device.name}`);
+}
+
+function onAnalytics(device: any) {
+  router.push(`/management/device-configuration/${device.id}/analytics`);
+}
 </script>
 <template>
   <main class="flex flex-col gap-4 p-4 pt-0">
@@ -509,7 +523,7 @@ function addDevice() {
                     class="flex flex-row items-center justify-between"
                   >
                     <CardTitle class="text-lg font-semibold"
-                      >Tracker #{{ device.IMSI.slice(-3) }}</CardTitle
+                      >Catcher #{{ device.IMSI.slice(-3) }}</CardTitle
                     >
                     <span
                       :class="{
@@ -554,36 +568,14 @@ function addDevice() {
                     </div>
                   </CardContent>
                   <CardFooter class="flex gap-4 pt-2">
-                    <div class="flex flex-row gap-1 ml-auto">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        class="h-8 w-8 text-muted-foreground hover:text-primary"
-                        aria-label="View"
-                      >
-                        <NuxtLink
-                          :to="`/management/device-configuration/${device.id}`"
-                        >
-                          <Eye class="w-5 h-5" />
-                        </NuxtLink>
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        class="h-8 w-8 text-muted-foreground hover:text-primary"
-                        aria-label="Edit"
-                        @click="openEditDevice(device, index)"
-                      >
-                        <Pencil class="w-5 h-5" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        class="h-8 w-8 text-muted-foreground hover:text-primary"
-                        aria-label="Delete"
-                      >
-                        <Trash class="w-5 h-5" />
-                      </Button>
+                    <div class="ml-auto flex gap-4">
+                      <ActionButtons
+                        :actions="['view', 'edit', 'delete', 'analytics']"
+                        @view="onView(device)"
+                        @edit="openEditDevice(device, index)"
+                        @delete="onDelete(device)"
+                        @analytics="onAnalytics(device)"
+                      />
                     </div>
                   </CardFooter>
                 </Card>
@@ -655,36 +647,14 @@ function addDevice() {
                     </div>
                   </CardContent>
                   <CardFooter class="flex gap-4 pt-2">
-                    <div class="flex flex-row gap-1 ml-auto">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        class="h-8 w-8 text-muted-foreground hover:text-primary"
-                        aria-label="View"
-                      >
-                        <NuxtLink
-                          :to="`/management/device-configuration/${device.id}`"
-                        >
-                          <Eye class="w-5 h-5" />
-                        </NuxtLink>
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        class="h-8 w-8 text-muted-foreground hover:text-primary"
-                        aria-label="Edit"
-                        @click="openEditDevice(device, index)"
-                      >
-                        <Pencil class="w-5 h-5" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        class="h-8 w-8 text-muted-foreground hover:text-primary"
-                        aria-label="Delete"
-                      >
-                        <Trash class="w-5 h-5" />
-                      </Button>
+                    <div class="ml-auto flex gap-4">
+                      <ActionButtons
+                        :actions="['view', 'edit', 'delete', 'analytics']"
+                        @view="onView(device)"
+                        @edit="openEditDevice(device, index)"
+                        @delete="onDelete(device)"
+                        @analytics="onAnalytics(device)"
+                      />
                     </div>
                   </CardFooter>
                 </Card>
@@ -756,36 +726,14 @@ function addDevice() {
                     </div>
                   </CardContent>
                   <CardFooter class="flex gap-4 pt-2">
-                    <div class="flex flex-row gap-1 ml-auto">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        class="h-8 w-8 text-muted-foreground hover:text-primary"
-                        aria-label="View"
-                      >
-                        <NuxtLink
-                          :to="`/management/device-configuration/${device.id}`"
-                        >
-                          <Eye class="w-5 h-5" />
-                        </NuxtLink>
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        class="h-8 w-8 text-muted-foreground hover:text-primary"
-                        aria-label="Edit"
-                        @click="openEditDevice(device, index)"
-                      >
-                        <Pencil class="w-5 h-5" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        class="h-8 w-8 text-muted-foreground hover:text-primary"
-                        aria-label="Delete"
-                      >
-                        <Trash class="w-5 h-5" />
-                      </Button>
+                    <div class="ml-auto flex gap-4">
+                      <ActionButtons
+                        :actions="['view', 'edit', 'delete', 'analytics']"
+                        @view="onView(device)"
+                        @edit="openEditDevice(device, index)"
+                        @delete="onDelete(device)"
+                        @analytics="onAnalytics(device)"
+                      />
                     </div>
                   </CardFooter>
                 </Card>
@@ -857,36 +805,14 @@ function addDevice() {
                     </div>
                   </CardContent>
                   <CardFooter class="flex gap-4 pt-2">
-                    <div class="flex flex-row gap-1 ml-auto">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        class="h-8 w-8 text-muted-foreground hover:text-primary"
-                        aria-label="View"
-                      >
-                        <NuxtLink
-                          :to="`/management/device-configuration/${device.id}`"
-                        >
-                          <Eye class="w-5 h-5" />
-                        </NuxtLink>
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        class="h-8 w-8 text-muted-foreground hover:text-primary"
-                        aria-label="Edit"
-                        @click="openEditDevice(device, index)"
-                      >
-                        <Pencil class="w-5 h-5" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        class="h-8 w-8 text-muted-foreground hover:text-primary"
-                        aria-label="Delete"
-                      >
-                        <Trash class="w-5 h-5" />
-                      </Button>
+                    <div class="ml-auto flex gap-4">
+                      <ActionButtons
+                        :actions="['view', 'edit', 'delete', 'analytics']"
+                        @view="onView(device)"
+                        @edit="openEditDevice(device, index)"
+                        @delete="onDelete(device)"
+                        @analytics="onAnalytics(device)"
+                      />
                     </div>
                   </CardFooter>
                 </Card>

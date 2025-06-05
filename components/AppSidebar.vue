@@ -39,11 +39,6 @@ const data = {
       icon: ChartNetwork,
     },
     {
-      title: "Analytics",
-      url: "/monitoring/analytics",
-      icon: FileChartPie,
-    },
-    {
       title: "Device Map",
       url: "/monitoring/device-map",
       icon: Map,

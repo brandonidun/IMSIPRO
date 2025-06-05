@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { Pencil, Trash, Eye, MoreVertical, MapPin } from "lucide-vue-next";
+import {
+  Pencil,
+  Trash,
+  Eye,
+  MoreVertical,
+  MapPin,
+  BarChart3,
+} from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,11 +17,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const props = defineProps<{
-  actions: Array<"edit" | "delete" | "view" | "locate">;
+  actions: Array<"edit" | "delete" | "view" | "locate" | "analytics">;
 }>();
 
 const emit = defineEmits<{
-  (e: "edit" | "delete" | "view" | "locate"): void;
+  (e: "edit" | "delete" | "view" | "locate" | "analytics"): void;
 }>();
 
 const iconMap = {
@@ -22,9 +29,12 @@ const iconMap = {
   delete: { icon: Trash, label: "Delete" },
   view: { icon: Eye, label: "View" },
   locate: { icon: MapPin, label: "Locate" },
+  analytics: { icon: BarChart3, label: "Analytics" },
 };
 
-const handleClick = (action: "edit" | "delete" | "view" | "locate") => {
+const handleClick = (
+  action: "edit" | "delete" | "view" | "locate" | "analytics"
+) => {
   emit(action);
 };
 </script>
@@ -52,7 +62,7 @@ const handleClick = (action: "edit" | "delete" | "view" | "locate") => {
             size="icon"
             class="h-8 w-8 text-muted-foreground hover:text-primary"
           >
-            <MoreVertical class="w-4 h-4" />
+            <MoreVertical class="w-5 h-5" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
