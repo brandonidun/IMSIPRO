@@ -26,7 +26,7 @@ const data = {
 </script>
 
 <template>
-  <div>
+  <div class="h-screen flex flex-col">
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
@@ -57,12 +57,12 @@ const data = {
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
-            <div class="flex items-center justify-end w-3xs px-4">
+            <div class="flex items-center justify-end ml-auto w-3xs px-4">
               <NavUser :user="data.user" />
             </div>
           </div>
         </header>
-        <div class="px-2">
+        <div class="flex-1 px-2 overflow-y-auto">
           <slot></slot>
         </div>
       </SidebarInset>

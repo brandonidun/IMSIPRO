@@ -433,7 +433,7 @@ function applyPowerSettings() {
 </script>
 
 <template>
-  <main class="flex flex-col gap-4 p-4">
+  <main class="flex flex-col gap-4 p-4 pt-0">
     <PageIntroduction
       :title="`Catcher #${device?.IMSI.slice(-3)}`"
       :description="`Details for device ${device?.idTag} and IMSI ${device?.IMSI} configuration`"

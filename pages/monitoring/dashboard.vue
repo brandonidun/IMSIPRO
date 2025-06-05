@@ -588,7 +588,7 @@ const recentMitigations = [
         </div>
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <Card
         :class="[
           'shadow-none pb-0 overflow-hidden h-full',
@@ -608,14 +608,14 @@ const recentMitigations = [
       </Card>
       <Card
         v-if="userRole === 'law_enforcement'"
-        class="shadow-none h-full flex flex-col md:col-span-1"
+        class="shadow-none h-full flex flex-col md:col-span-1 max-h-[475px]"
       >
         <CardHeader>
-          <CardTitle class="text-xl font-bold"
+          <CardTitle class="text-base font-bold"
             >Suspicious Activity Detection</CardTitle
           >
         </CardHeader>
-        <CardContent class="flex flex-col gap-3 max-h-[400px] overflow-y-auto">
+        <CardContent class="flex flex-col gap-3 overflow-y-auto">
           <div
             v-for="d in suspiciousDetections"
             :key="d.title"
@@ -647,72 +647,35 @@ const recentMitigations = [
               <span>{{ d.meta }}</span>
             </div>
           </div>
-          <hr class="my-2" />
+        </CardContent>
+        <CardFooter class="pt-0">
           <div>
-            <div class="font-semibold text-gray-800 mb-1">
+            <div class="font-semibold text-sm text-gray-800">
               Detection Algorithms:
             </div>
-            <ul class="space-y-1">
+            <ul class="space-y-1 text-sm">
               <li
                 v-for="algo in detectionAlgos"
                 :key="algo"
                 class="flex items-center gap-2"
               >
                 <span
-                  class="w-3 h-3 rounded-full bg-blue-500 inline-block"
+                  class="w-2 h-2 rounded-full bg-blue-500 inline-block"
                 ></span>
                 <span>{{ algo }}</span>
               </li>
             </ul>
           </div>
-        </CardContent>
+        </CardFooter>
       </Card>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <Card
-        v-if="userRole === 'law_enforcement'"
-        class="shadow-none h-full flex flex-col md:col-span-2"
-      >
-        <CardHeader class="flex items-center gap-2">
-          <CardTitle class="text-xl font-bold flex items-center gap-2">
-            Operational Intelligence Feed
-          </CardTitle>
-        </CardHeader>
-        <CardContent
-          class="flex flex-col gap-2 pt-2 max-h-[400px] overflow-y-auto"
-        >
-          <div
-            v-for="(item, i) in intelFeed"
-            :key="i"
-            :class="['rounded-lg border p-3 mb-1', item.color, item.border]"
-          >
-            <div class="flex justify-between items-center">
-              <span v-if="item.title" :class="'font-semibold ' + item.text">{{
-                item.title
-              }}</span>
-              <span v-if="item.time" class="text-xs text-gray-500">{{
-                item.time
-              }}</span>
-            </div>
-            <div
-              :class="[
-                item.title ? 'text-sm' : 'font-medium text-base',
-                item.text,
-                'mb-1',
-              ]"
-            >
-              {{ item.message }}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <Card
         v-if="userRole === 'law_enforcement'"
         class="shadow-none h-full flex flex-col md:col-span-1"
       >
         <CardHeader class="flex items-center gap-2">
-          <CardTitle class="text-xl font-bold flex items-center gap-2">
-            <Zap class="w-6 h-6 text-blue-500" />
+          <CardTitle class="text-base font-bold flex items-center gap-2">
             Proactive Mitigation Panel
           </CardTitle>
         </CardHeader>
@@ -722,7 +685,7 @@ const recentMitigations = [
               v-for="(action, i) in mitigationActions"
               :key="action.label"
               :class="[
-                'rounded-xl text-white text-base font-semibold flex items-center justify-center gap-2 py-5 w-full min-h-[56px] shadow-none border-none transition-all',
+                'rounded-xl text-white text-sm flex items-center justify-center gap-2 py-5 w-full min-h-[56px] shadow-none border-none transition-all',
               ]"
               size="lg"
             >
@@ -739,12 +702,47 @@ const recentMitigations = [
                 :key="i"
                 class="flex items-center gap-2 text-sm"
               >
-                <span
-                  class="w-3 h-3 rounded-full bg-green-500 inline-block"
-                ></span>
+                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
                 <span>{{ item }}</span>
               </li>
             </ul>
+          </div>
+        </CardContent>
+      </Card>
+      <Card
+        v-if="userRole === 'law_enforcement'"
+        class="shadow-none h-full flex flex-col md:col-span-2 max-h-[480px]"
+      >
+        <CardHeader class="flex items-center gap-2">
+          <CardTitle class="text-base font-bold flex items-center gap-2">
+            Operational Intelligence Feed
+          </CardTitle>
+        </CardHeader>
+        <CardContent class="flex flex-col gap-2 overflow-y-auto">
+          <div
+            v-for="(item, i) in intelFeed"
+            :key="i"
+            :class="['rounded-lg border p-3', item.color, item.border]"
+          >
+            <div class="flex justify-between items-center">
+              <span
+                v-if="item.title"
+                :class="'font-semibold text-sm' + item.text"
+                >{{ item.title }}</span
+              >
+              <span v-if="item.time" class="text-xs text-gray-500">{{
+                item.time
+              }}</span>
+            </div>
+            <div
+              :class="[
+                item.title ? 'text-sm' : 'font-medium text-base',
+                item.text,
+                'mb-1',
+              ]"
+            >
+              {{ item.message }}
+            </div>
           </div>
         </CardContent>
       </Card>
