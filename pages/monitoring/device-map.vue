@@ -20,6 +20,9 @@ const trackingDevices = [
     phone_number: "+2334567890",
     IMSI: "310150123456789",
     signal_strength: 90,
+    network: "AT&T",
+    band: "Band 1",
+    optional: { active: 1 },
   },
   {
     id: 2,
@@ -31,6 +34,9 @@ const trackingDevices = [
     phone_number: "+2334567891",
     IMSI: "310260987654321",
     signal_strength: 60,
+    network: "T-Mobile",
+    band: "Band 3",
+    optional: { active: 0 },
   },
   {
     id: 3,
@@ -42,6 +48,9 @@ const trackingDevices = [
     phone_number: "+2334567892",
     IMSI: "310410112233445",
     signal_strength: 35,
+    network: "Verizon",
+    band: "Band 5",
+    optional: { active: 1 },
   },
   {
     id: 4,
@@ -53,6 +62,9 @@ const trackingDevices = [
     phone_number: "+2334567893",
     IMSI: "310120556677889",
     signal_strength: 80,
+    network: "Sprint",
+    band: "Band 8",
+    optional: { active: 1 },
   },
   {
     id: 5,
@@ -64,6 +76,9 @@ const trackingDevices = [
     phone_number: "+2334567894",
     IMSI: "310120556677880",
     signal_strength: 75,
+    network: "Vodafone",
+    band: "Band 38",
+    optional: { active: 0 },
   },
   {
     id: 6,
@@ -75,6 +90,9 @@ const trackingDevices = [
     phone_number: "+2334567895",
     IMSI: "310120556677881",
     signal_strength: 55,
+    network: "MTN",
+    band: "Band 39",
+    optional: { active: 0 },
   },
   {
     id: 7,
@@ -86,6 +104,9 @@ const trackingDevices = [
     phone_number: "+2334567896",
     IMSI: "310120556677882",
     signal_strength: 65,
+    network: "AirtelTigo",
+    band: "Band 40",
+    optional: { active: 1 },
   },
   {
     id: 8,
@@ -97,6 +118,9 @@ const trackingDevices = [
     phone_number: "+2334567897",
     IMSI: "310120556677883",
     signal_strength: 45,
+    network: "Glo",
+    band: "Band 41",
+    optional: { active: 0 },
   },
   {
     id: 9,
@@ -108,6 +132,9 @@ const trackingDevices = [
     phone_number: "+2334567898",
     IMSI: "310120556677884",
     signal_strength: 50,
+    network: "Expresso",
+    band: "GSM 900",
+    optional: { active: 0 },
   },
   {
     id: 10,
@@ -119,6 +146,9 @@ const trackingDevices = [
     phone_number: "+2334567899",
     IMSI: "310120556677885",
     signal_strength: 70,
+    network: "Busy",
+    band: "GSM 1800",
+    optional: { active: 1 },
   },
 ];
 
@@ -149,12 +179,12 @@ onMounted(() => {
 });
 
 // Combine device locations and user location for markers
-const allMarkers = computed(() => {
-  if (userLocation.value) {
-    return [...trackingDevices];
-  }
-  return trackingDevices;
-});
+// const allMarkers = computed(() => {
+//   if (userLocation.value) {
+//     return [...trackingDevices];
+//   }
+//   return trackingDevices;
+// });
 
 const columns = [
   { key: "idTag", label: "Tracker" },
@@ -212,7 +242,7 @@ function centerOnTracker(tracker: any) {
         </CardHeader>
         <CardContent class="p-0">
           <DeviceMapView
-            :locations="allMarkers"
+            :locations="trackingDevices"
             :center="selectedCenter"
             :selected-marker-id="selectedMarkerId"
             class="min-h-[400px] h-full"

@@ -1,16 +1,16 @@
 export type DeviceMapLocation = {
   lng: number;
   lat: number;
-  IMEI: string;
+  IMEI?: string;
   IMSI: string;
   phone_number: string;
   network: string;
   signal_strength: number;
-  band: string;
+  band?: string;
   id: number;
   idTag: string;
   name: string;
-  optional: {
+  optional?: {
     active: number;
   };
 };

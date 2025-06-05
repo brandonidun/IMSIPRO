@@ -9,7 +9,8 @@ import {
   GlobeLock,
   Map,
   LogOut,
-  FileChartPie,
+  Siren,
+  Cast,
 } from "lucide-vue-next";
 
 import { SidebarMenuButton } from "@/components/ui/sidebar";
@@ -56,12 +57,12 @@ const navMain = computed(() => {
       {
         title: "Intel Stream",
         url: "/monitoring/intel-stream",
-        icon: FileChartPie,
+        icon: Cast,
       },
       {
         title: "Crime Forecast",
         url: "/monitoring/crime-forecast",
-        icon: Award,
+        icon: Siren,
       }
     );
   }

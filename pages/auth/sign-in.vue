@@ -18,11 +18,14 @@ const lawEnforcementLogins = [
   { email: "officer_jane@mail.com", password: "secure123" },
   { email: "detective_smith@mail.com", password: "forecast2024" },
   { email: "chief_brown@mail.com", password: "radarintel" },
+  { email: "admin@mail.com", password: "admin123" },
+  { email: "detective@sourcertz.com", password: "password" },
 ];
 const userLogins = [
   { email: "user_alex@mail.com", password: "userpass" },
   { email: "user_maria@mail.com", password: "welcome1" },
   { email: "biduntawiah@gmail.com", password: "Password@1" },
+  { email: "info@sourcertz.com", password: "password" },
 ];
 const loginError = ref("");
 
