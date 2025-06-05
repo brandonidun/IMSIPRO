@@ -15,18 +15,20 @@ import {
 import { SidebarMenuButton } from "@/components/ui/sidebar";
 
 import { type SidebarProps } from "@/components/ui/sidebar";
+import { ref, computed } from "vue";
 
 const props = withDefaults(defineProps<SidebarProps>(), {
   variant: "inset",
 });
 
-const data = {
-  user: {
-    name: "Admin",
-    email: "admin@mail.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
+const userRole = ref(
+  typeof window !== "undefined"
+    ? localStorage.getItem("role") || "user"
+    : "user"
+);
+
+const navMain = computed(() => {
+  const base = [
     {
       title: "Dashboard",
       url: "/monitoring/dashboard",
@@ -43,7 +45,35 @@ const data = {
       url: "/monitoring/device-map",
       icon: Map,
     },
-  ],
+  ];
+  if (userRole.value === "law_enforcement") {
+    base.push(
+      {
+        title: "Threat Radar",
+        url: "/monitoring/threat-radar",
+        icon: TriangleAlert,
+      },
+      {
+        title: "Intel Stream",
+        url: "/monitoring/intel-stream",
+        icon: FileChartPie,
+      },
+      {
+        title: "Crime Forecast",
+        url: "/monitoring/crime-forecast",
+        icon: Award,
+      }
+    );
+  }
+  return base;
+});
+
+const data = {
+  user: {
+    name: "Admin",
+    email: "admin@mail.com",
+    avatar: "/avatars/shadcn.jpg",
+  },
   projects: [
     {
       name: "Device Configuration",
@@ -106,7 +136,7 @@ function handleLogout() {
       </SidebarMenu>
     </SidebarHeader>
     <SidebarContent>
-      <NavMain :items="data.navMain" />
+      <NavMain :items="navMain" />
       <NavProjects :projects="data.projects" />
       <NavAnalytics :analytics="data.analytics" />
     </SidebarContent>

@@ -14,9 +14,36 @@ const router = useRouter();
 const { isSubmitting, handleSubmit, meta, values } =
   useCustomForm(signInSchema);
 
+const lawEnforcementLogins = [
+  { email: "officer_jane@mail.com", password: "secure123" },
+  { email: "detective_smith@mail.com", password: "forecast2024" },
+  { email: "chief_brown@mail.com", password: "radarintel" },
+];
+const userLogins = [
+  { email: "user_alex@mail.com", password: "userpass" },
+  { email: "user_maria@mail.com", password: "welcome1" },
+  { email: "biduntawiah@gmail.com", password: "Password@1" },
+];
+const loginError = ref("");
+
 const onSubmit = handleSubmit(async (values) => {
   isSubmitting.value = true;
-  router.push("/monitoring/dashboard");
+  loginError.value = "";
+  const law = lawEnforcementLogins.find(
+    (u) => u.email === values.email && u.password === values.password
+  );
+  const user = userLogins.find(
+    (u) => u.email === values.email && u.password === values.password
+  );
+  if (law) {
+    localStorage.setItem("role", "law_enforcement");
+    router.push("/monitoring/dashboard");
+  } else if (user) {
+    localStorage.setItem("role", "user");
+    router.push("/monitoring/dashboard");
+  } else {
+    loginError.value = "Invalid email or password";
+  }
   isSubmitting.value = false;
 });
 </script>
@@ -74,6 +101,12 @@ const onSubmit = handleSubmit(async (values) => {
                     </template>
                     <template v-else> Log in </template>
                   </Button>
+                  <div
+                    v-if="loginError"
+                    class="text-red-500 text-xs mt-2 text-center"
+                  >
+                    {{ loginError }}
+                  </div>
                   <div class="flex items-center">
                     <a
                       href="#"
