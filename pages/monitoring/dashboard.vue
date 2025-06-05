@@ -8,9 +8,15 @@ import {
   FileWarning,
   Hourglass,
   RefreshCcw,
+  Wifi,
+  MessageCircle,
+  Truck,
+  Zap,
 } from "lucide-vue-next";
 import { Table, TableHeader, TableFooter } from "@/components/DataTable";
 import { StatCard } from "~/components/Card";
+import { ref, computed } from "vue";
+
 definePageMeta({
   breadcrumb: "Dashboard",
 });
@@ -384,6 +390,141 @@ onMounted(() => {
     userLocation.value = { lat: 5.5913754, lng: -0.2497702 };
   }
 });
+
+const userRole = ref(
+  typeof window !== "undefined"
+    ? localStorage.getItem("role") || "user"
+    : "user"
+);
+
+const suspiciousDetections = [
+  {
+    title: "Burner Phone Cluster",
+    level: "CRITICAL",
+    levelColor: "bg-red-500",
+    borderColor: "border-red-200",
+    bgColor: "bg-red-50",
+    desc: "15 new IMSI/IMEI pairs in Nima (5min radius)",
+    time: "2 min ago",
+    meta: "GPS: 5.614818, -0.205874",
+  },
+  {
+    title: "Network Downgrade",
+    level: "HIGH",
+    levelColor: "bg-orange-400",
+    borderColor: "border-orange-200",
+    bgColor: "bg-orange-50",
+    desc: "4G→2G transition in Jamestown secure zone",
+    time: "8 min ago",
+    meta: "IMEI: 35******7890",
+  },
+  {
+    title: "Cross-Border SIM",
+    level: "MEDIUM",
+    levelColor: "bg-yellow-400",
+    borderColor: "border-yellow-200",
+    bgColor: "bg-yellow-50",
+    desc: "Togo carrier SIM detected in Airport area",
+    time: "15 min ago",
+    meta: "IMSI: 621******4321",
+  },
+];
+const detectionAlgos = [
+  "Burner Phone Cluster Detection",
+  "Network Downgrade Alerts",
+  "Cross-Border SIM Tracking",
+];
+
+const intelFeed = [
+  {
+    title: "",
+    message: "15 new devices detected in Nima hotspot",
+    time: "",
+    color: "bg-red-50",
+    border: "border-red-100",
+    text: "text-red-700",
+    timeAgo: "",
+  },
+  {
+    title: "SWAT Team Dispatched",
+    message: "5 units en route to Nima coordinates",
+    time: "5 min ago",
+    color: "bg-blue-50",
+    border: "border-blue-100",
+    text: "text-blue-700",
+  },
+  {
+    title: "Network Downgrade",
+    message: "IMEI: 35******7890 switched to 2G in secure zone",
+    time: "12 min ago",
+    color: "bg-orange-50",
+    border: "border-orange-100",
+    text: "text-orange-700",
+  },
+  {
+    title: "New Patrol Checkpoint",
+    message: "Checkpoint established at Nima Junction",
+    time: "18 min ago",
+    color: "bg-purple-50",
+    border: "border-purple-100",
+    text: "text-purple-700",
+  },
+  {
+    title: "Signal Jam Activated",
+    message: "2G networks disabled in Nima perimeter",
+    time: "22 min ago",
+    color: "bg-green-50",
+    border: "border-green-100",
+    text: "text-green-700",
+  },
+  {
+    title: "",
+    message: "15 new devices detected in Nima hotspot",
+    time: "",
+    color: "bg-red-50",
+    border: "border-red-100",
+    text: "text-red-700",
+    timeAgo: "",
+  },
+  {
+    title: "SWAT Team Dispatched",
+    message: "5 units en route to Nima coordinates",
+    time: "5 min ago",
+    color: "bg-blue-50",
+    border: "border-blue-100",
+    text: "text-blue-700",
+  },
+  {
+    title: "Network Downgrade",
+    message: "IMEI: 35******7890 switched to 2G in secure zone",
+    time: "12 min ago",
+    color: "bg-orange-50",
+    border: "border-orange-100",
+    text: "text-orange-700",
+  },
+];
+
+const mitigationActions = [
+  {
+    label: "Jam 2G Networks (Nima Zone)",
+    color: "bg-red-500 hover:bg-red-600",
+    icon: Wifi,
+  },
+  {
+    label: "Send Public Warning (Jamestown)",
+    color: "bg-orange-500 hover:bg-orange-600",
+    icon: MessageCircle,
+  },
+  {
+    label: "Deploy SWAT Team (5 units)",
+    color: "bg-blue-600 hover:bg-blue-700",
+    icon: Truck,
+  },
+];
+const recentMitigations = [
+  "2G jamming activated in Nima (3 min ago)",
+  "Patrol alerted about suspicious devices (10 min ago)",
+];
 </script>
 
 <template>
@@ -447,17 +588,164 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <Card class="shadow-none pb-0 col-span-2 overflow-hidden h-full">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <Card
+        :class="[
+          'shadow-none pb-0 overflow-hidden h-full',
+          userRole === 'law_enforcement' ? 'md:col-span-2' : 'md:col-span-3',
+        ]"
+      >
         <CardHeader class="flex items-center justify-between">
           <CardTitle class="text-base">Device Location Map</CardTitle>
         </CardHeader>
         <CardContent class="p-0">
           <FullMapView
             :locations="deviceLocations"
-            :center="userLocation"
+            :center="userLocation ?? undefined"
             class="min-h-[400px] h-full"
           />
+        </CardContent>
+      </Card>
+      <Card
+        v-if="userRole === 'law_enforcement'"
+        class="shadow-none h-full flex flex-col md:col-span-1"
+      >
+        <CardHeader>
+          <CardTitle class="text-xl font-bold"
+            >Suspicious Activity Detection</CardTitle
+          >
+        </CardHeader>
+        <CardContent class="flex flex-col gap-3 max-h-[400px] overflow-y-auto">
+          <div
+            v-for="d in suspiciousDetections"
+            :key="d.title"
+            :class="['rounded-xl border p-4', d.borderColor, d.bgColor, 'mb-2']"
+          >
+            <div class="flex items-center justify-between mb-1">
+              <span
+                :class="
+                  'font-semibold text-lg ' +
+                  (d.level === 'CRITICAL'
+                    ? 'text-red-700'
+                    : d.level === 'HIGH'
+                    ? 'text-orange-700'
+                    : 'text-yellow-700')
+                "
+                >{{ d.title }}</span
+              >
+              <span
+                :class="
+                  'px-3 py-1 rounded-full text-xs font-bold text-white ' +
+                  d.levelColor
+                "
+                >{{ d.level }}</span
+              >
+            </div>
+            <div class="text-sm text-gray-700 mb-1">{{ d.desc }}</div>
+            <div class="flex justify-between text-xs text-gray-500">
+              <span>{{ d.time }}</span>
+              <span>{{ d.meta }}</span>
+            </div>
+          </div>
+          <hr class="my-2" />
+          <div>
+            <div class="font-semibold text-gray-800 mb-1">
+              Detection Algorithms:
+            </div>
+            <ul class="space-y-1">
+              <li
+                v-for="algo in detectionAlgos"
+                :key="algo"
+                class="flex items-center gap-2"
+              >
+                <span
+                  class="w-3 h-3 rounded-full bg-blue-500 inline-block"
+                ></span>
+                <span>{{ algo }}</span>
+              </li>
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <Card
+        v-if="userRole === 'law_enforcement'"
+        class="shadow-none h-full flex flex-col md:col-span-2"
+      >
+        <CardHeader class="flex items-center gap-2">
+          <CardTitle class="text-xl font-bold flex items-center gap-2">
+            Operational Intelligence Feed
+          </CardTitle>
+        </CardHeader>
+        <CardContent
+          class="flex flex-col gap-2 pt-2 max-h-[400px] overflow-y-auto"
+        >
+          <div
+            v-for="(item, i) in intelFeed"
+            :key="i"
+            :class="['rounded-lg border p-3 mb-1', item.color, item.border]"
+          >
+            <div class="flex justify-between items-center">
+              <span v-if="item.title" :class="'font-semibold ' + item.text">{{
+                item.title
+              }}</span>
+              <span v-if="item.time" class="text-xs text-gray-500">{{
+                item.time
+              }}</span>
+            </div>
+            <div
+              :class="[
+                item.title ? 'text-sm' : 'font-medium text-base',
+                item.text,
+                'mb-1',
+              ]"
+            >
+              {{ item.message }}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      <Card
+        v-if="userRole === 'law_enforcement'"
+        class="shadow-none h-full flex flex-col md:col-span-1"
+      >
+        <CardHeader class="flex items-center gap-2">
+          <CardTitle class="text-xl font-bold flex items-center gap-2">
+            <Zap class="w-6 h-6 text-blue-500" />
+            Proactive Mitigation Panel
+          </CardTitle>
+        </CardHeader>
+        <CardContent class="flex flex-col gap-4">
+          <div class="flex flex-col gap-3">
+            <Button
+              v-for="(action, i) in mitigationActions"
+              :key="action.label"
+              :class="[
+                'rounded-xl text-white text-base font-semibold flex items-center justify-center gap-2 py-5 w-full min-h-[56px] shadow-none border-none transition-all',
+              ]"
+              size="lg"
+            >
+              <component :is="action.icon" class="w-6 h-6" />
+              {{ action.label }}
+            </Button>
+          </div>
+          <hr />
+          <div>
+            <div class="font-semibold text-gray-800 mb-2">Recent Actions:</div>
+            <ul class="space-y-1">
+              <li
+                v-for="(item, i) in recentMitigations"
+                :key="i"
+                class="flex items-center gap-2 text-sm"
+              >
+                <span
+                  class="w-3 h-3 rounded-full bg-green-500 inline-block"
+                ></span>
+                <span>{{ item }}</span>
+              </li>
+            </ul>
+          </div>
         </CardContent>
       </Card>
     </div>
