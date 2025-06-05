@@ -435,7 +435,7 @@ const detectionAlgos = [
   "Cross-Border SIM Tracking",
 ];
 
-const intelFeed = [
+const intelFeed = ref([
   {
     title: "",
     message: "15 new devices detected in Nima hotspot",
@@ -502,7 +502,12 @@ const intelFeed = [
     border: "border-orange-100",
     text: "text-orange-700",
   },
-];
+]);
+
+const recentMitigations = ref([
+  "2G jamming activated in Nima (3 min ago)",
+  "Patrol alerted about suspicious devices (10 min ago)",
+]);
 
 const mitigationActions = [
   {
@@ -521,10 +526,37 @@ const mitigationActions = [
     icon: Truck,
   },
 ];
-const recentMitigations = [
-  "2G jamming activated in Nima (3 min ago)",
-  "Patrol alerted about suspicious devices (10 min ago)",
-];
+
+function handleMitigation(action: { label: string; color: string; icon: any }) {
+  // Add to Operational Intelligence Feed
+  const now = new Date();
+  const time = `${now.getHours()}:${now
+    .getMinutes()
+    .toString()
+    .padStart(2, "0")}`;
+  let color = "bg-blue-50",
+    border = "border-blue-100",
+    text = "text-blue-700";
+  if (action.color.includes("red")) {
+    color = "bg-red-50";
+    border = "border-red-100";
+    text = "text-red-700";
+  } else if (action.color.includes("orange")) {
+    color = "bg-orange-50";
+    border = "border-orange-100";
+    text = "text-orange-700";
+  }
+  intelFeed.value.unshift({
+    title: action.label,
+    message: action.label,
+    time: "Just now",
+    color,
+    border,
+    text,
+  });
+  // Add to Recent Actions
+  recentMitigations.value.unshift(`${action.label} (Just now)`);
+}
 </script>
 
 <template>
@@ -685,18 +717,18 @@ const recentMitigations = [
               v-for="(action, i) in mitigationActions"
               :key="action.label"
               :class="[
-                'rounded-xl text-white text-sm flex items-center justify-center gap-2 py-5 w-full min-h-[56px] shadow-none border-none transition-all',
+                'rounded-xl text-white text-sm flex items-center justify-start w-full min-h-[40px] shadow-none border-none transition-all',
               ]"
               size="lg"
+              @click="handleMitigation(action)"
             >
-              <component :is="action.icon" class="w-6 h-6" />
               {{ action.label }}
             </Button>
           </div>
           <hr />
-          <div>
+          <div class="">
             <div class="font-semibold text-gray-800 mb-2">Recent Actions:</div>
-            <ul class="space-y-1">
+            <ul class="space-y-1 max-h-[150px] overflow-auto">
               <li
                 v-for="(item, i) in recentMitigations"
                 :key="i"
