@@ -261,7 +261,7 @@ definePageMeta({
             <div
               class="flex flex-col items-center justify-center h-60 text-center text-gray-400 gap-2"
             >
-              <Cast class="w-12 h-12 text-blue-200 mb-2" />
+              <Cast class="w-12 h-12 text-gray-200 mb-2" />
               <div class="font-semibold text-lg">No intel streams yet</div>
               <div class="text-sm">
                 When streams are available, they will appear here in real time.
