@@ -403,11 +403,6 @@ definePageMeta({
                   class="ml-2 bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-xs font-semibold"
                   >Current</span
                 >
-                <span
-                  v-if="plan.bestValue"
-                  class="ml-2 bg-blue-600 text-white px-2 py-0.5 rounded-full text-xs font-semibold absolute top-2 right-2"
-                  >BEST VALUE</span
-                >
               </div>
               <div class="text-xs text-gray-500 mb-2">{{ plan.desc }}</div>
               <div class="flex items-end gap-1 mb-2">
