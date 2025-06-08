@@ -94,12 +94,6 @@ const data = {
       icon: BadgeCent,
       isActive: true,
     },
-    {
-      title: "Subscription",
-      url: "",
-      icon: Award,
-      isActive: true,
-    },
   ],
 };
 function handleLogout() {

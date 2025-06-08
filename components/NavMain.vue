@@ -99,7 +99,7 @@ defineProps<{
 .router-link-exact-active {
   /* Add your styles here */
   /* border: 1px solid #17a34a29; */
-  background-color: #eff0f2d5;
+  background-color: #ffffff;
   color: #0b2166;
 
   svg {
