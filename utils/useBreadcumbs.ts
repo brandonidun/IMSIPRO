@@ -8,6 +8,7 @@ const breadcrumbMap: Record<string, string> = {
   settings: "Settings",
   notifications: "Notifications",
   analytics: "Analytics",
+  monetization: "Monetization",
 };
 
 export function useBreadcrumbs() {

@@ -90,7 +90,7 @@ const data = {
   analytics: [
     {
       title: "Billing",
-      url: "",
+      url: "/monetization/billing",
       icon: BadgeCent,
       isActive: true,
     },

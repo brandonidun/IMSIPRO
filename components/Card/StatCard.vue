@@ -2,7 +2,7 @@
 defineProps<{
   title: string;
   value: number | string;
-  icon: any;
+  icon?: any;
   color?: string;
 }>();
 </script>
@@ -20,6 +20,7 @@ defineProps<{
           </CardDescription>
         </div>
         <div
+          v-if="icon"
           :class="`p-3 rounded-full flex justify-center items-center border-2 bg-black-100 border-${color}-200`"
         >
           <component :is="icon" :class="`text-${color}-800`" />
